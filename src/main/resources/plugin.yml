@@ -1,0 +1,18 @@
+name: CosmicPrisonsCore
+version: '1.0'
+main: org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore
+api-version: '1.21'
+commands:
+  stats:
+    description: gives player stats
+  admingive:
+    description: AdminGiveCommand
+  extract:
+    description: extract energy
+softdepend:
+  - ProtocolLib
+  - ProtocolSupport
+  - ViaVersion
+  - ViaBackwards
+  - ViaRewind
+  - Geyser-Spigot
