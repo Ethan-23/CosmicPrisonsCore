@@ -2,7 +2,7 @@ package org.evasive.me.cosmicPrisonsCore.customItems.shards;
 
 import net.kyori.adventure.text.Component;
 import org.evasive.me.cosmicPrisonsCore.customItems.ItemBuilder;
-import org.evasive.me.cosmicPrisonsCore.customItems.rarity.Rarity;
+import org.evasive.me.cosmicPrisonsCore.rarity.Rarity;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 
 import java.util.ArrayList;

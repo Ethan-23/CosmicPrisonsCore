@@ -1,11 +1,13 @@
 package org.evasive.me.cosmicPrisonsCore.mining.ores;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 
 public class RedstoneOre implements OreCreator{
     @Override
     public String getName() {
-        return "Redstone Ore";
+        return "&4&lRedstone Ore";
     }
 
     @Override
@@ -36,5 +38,10 @@ public class RedstoneOre implements OreCreator{
     @Override
     public int getRespawnTime() {
         return 60;
+    }
+
+    @Override
+    public int mineableLevel() {
+        return 50;
     }
 }

@@ -12,19 +12,25 @@ import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore;
+import org.evasive.me.cosmicPrisonsCore.enchanting.EnchantFunctions;
+import org.evasive.me.cosmicPrisonsCore.enchanting.mining.PickaxeEnchants;
 import org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.data.MiningBlockData;
+import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
+import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
 import org.evasive.me.cosmicPrisonsCore.mining.records.BlockPos;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
+import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions.*;
 
 public class MiningAnimation extends PacketListenerAbstract {
 
@@ -67,17 +73,22 @@ public class MiningAnimation extends PacketListenerAbstract {
         ItemMeta itemMeta = mainItem.getItemMeta();
         if(itemMeta == null)
             return;
-        ItemKeyFunctions pickaxeFunctions = new ItemKeyFunctions();
-        if(pickaxeFunctions.hasPickaxe(mainItem.getItemMeta()) && pickaxeFunctions.isEnergyFull(mainItem.getItemMeta()))
+        if(!hasPickaxe(mainItem.getItemMeta()))
             return;
-        if(pickaxeFunctions.getLevelRequirement(mainItem.getItemMeta()) > CosmicPrisonsCore.playerLevelManager.getPlayerData(player.getUniqueId()).getLevel()){
-            player.sendTitlePart(TitlePart.TITLE, ComponentUtils.legacy("&cRequires Mining Level " + "&f&l" + pickaxeFunctions.getLevelRequirement(mainItem.getItemMeta())));
+        if(isEnergyFull(mainItem.getItemMeta()))
+            return;
+        if(getLevelRequirement(mainItem.getItemMeta()) > CosmicPrisonsCore.playerLevelManager.getPlayerData(player.getUniqueId()).getLevel()){
+            player.sendTitlePart(TitlePart.TITLE, ComponentUtils.legacy("&cRequires Mining Level " + "&f&l" + getLevelRequirement(mainItem.getItemMeta())));
             return;
         }
 
 
         Block block = CosmicPrisonsCore.selectedBlockMap.getBlock(player.getUniqueId());
-        assert block != null;
+
+        if(block == null)
+            return;
+        if(!blocks.contains(block.getType()))
+            return;
 
         BlockPos blockPos = BlockPos.fromBlock(block);
 
@@ -86,13 +97,12 @@ public class MiningAnimation extends PacketListenerAbstract {
             return;
         }
 
-        if(CosmicPrisonsCore.miningMap.getBlockProgress(blockPos, player.getUniqueId()) >= 100){
-            breakBlock(player, block);
-            return;
-        }
+        //MOVE TO ADD BLOCK PROGRESS
+
 
         addBlockProgress(player, block);
-
+        if(OreType.valueOf(block.getType().name()).getOreCreator().mineableLevel() < CosmicPrisonsCore.getPlayerLevelManager().getPlayerData(player.getUniqueId()).getLevel())
+            addSurroundingBlockProgress(player, block);
     }
 
 
@@ -117,23 +127,88 @@ public class MiningAnimation extends PacketListenerAbstract {
     }
 
     public void breakBlock(Player player, Block block){
+        ItemStack pickaxe = player.getInventory().getItemInMainHand();
         Bukkit.getScheduler().runTask(CosmicPrisonsCore.getCore(), () -> {
             if(!CosmicPrisonsCore.miningMap.containsBlockLocation(BlockPos.fromBlock(block)))
                 return;
+            new EnchantFunctions().handleBreakingEnchants(player, pickaxe.getItemMeta());
             Material tempMaterial = block.getType();
             block.setType(Material.STONE);
             resetBlockAnimations(block);
-            new MiningFunctions().BreakBlock(player, tempMaterial, BlockPos.fromBlock(block));
+            new MiningFunctions().BreakBlock(player, tempMaterial, BlockPos.fromBlock(block), pickaxe);
             CosmicPrisonsCore.miningMap.removeBlockPos(BlockPos.fromBlock(block));
             CosmicPrisonsCore.selectedBlockMap.removePlayer(player.getUniqueId());
         });
     }
 
     public void addBlockProgress(Player player, Block block){
+        float progress;
+        if(OreType.valueOf(block.getType().name()).getOreCreator().mineableLevel() > CosmicPrisonsCore.playerLevelManager.getPlayerData(player.getUniqueId()).getLevel()){
+            progress = new MiningFunctions().getBaseSpeed(player.getInventory().getItemInMainHand(), block.getType());
+        }else{
+            progress = new MiningFunctions().calculateEfficiency(player, player.getInventory().getItemInMainHand(), block.getType()); // Amount being added to block change with enchants / buffs
+        }
 
-        float progress = new MiningFunctions().calculateEfficiency(player, player.getInventory().getItemInMainHand(), block.getType()); // Amount being added to block change with enchants / buffs
         CosmicPrisonsCore.miningMap.IncreaseBlockBreak(BlockPos.fromBlock(block), player.getUniqueId(), progress);
         sendAnimationPacket(player, block, (byte) (CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId()) / (100 / 10)));
+        if(CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId()) >= 100){
+            breakBlock(player, block);
+        }
+    }
+
+    public void addSurroundingBlockProgress(Player player, Block block){
+        //NEED TO SUBTRACT XP FROM THESE BLOCKS????
+        if(!new EnchantFunctions().checkFractureChance(player.getInventory().getItemInMainHand().getItemMeta()))
+            return;
+
+        for(Block nearbyBlock : getFractureBlocks(block)){
+            BlockPos blockPos = BlockPos.fromBlock(nearbyBlock);
+
+            if(!CosmicPrisonsCore.miningMap.containsPlayerAtLocation(blockPos, player.getUniqueId())){
+                CosmicPrisonsCore.miningMap.addBlockPos(blockPos, player.getUniqueId(), new MiningBlockData(0, 0, CosmicPrisonsCore.animationIds.getUniqueAnimationId()));
+            }
+            addBlockProgress(player, nearbyBlock);
+        }
+    }
+
+    public List<Block> getFractureBlocks(Block block){
+        List<Block> blockList = new ArrayList<>();
+        int centerX = block.getX();
+        int centerY = block.getY();
+        int centerZ = block.getZ();
+        World world = block.getWorld();
+
+        for (int x = centerX - 1; x <= centerX + 1; x++) {
+            for (int y = centerY - 1; y <= centerY + 1; y++) {
+                for (int z = centerZ - 1; z <= centerZ + 1; z++) {
+                    if (x == centerX && y == centerY && z == centerZ)
+                        continue;
+                    Block nearbyBlock = world.getBlockAt(x, y, z);
+                    if(nearbyBlock.getType() != block.getType() && nearbyBlock.getType() != OreType.valueOf(block.getType().name()).getOreCreator().getRefinedMaterial())
+                        continue;
+
+                    BlockFace[] faces = {
+                            BlockFace.UP, BlockFace.DOWN,
+                            BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST
+                    };
+
+                    boolean exposedToAir = false;
+                    for (BlockFace face : faces) {
+                        if (nearbyBlock.getRelative(face).getType() == Material.AIR) {
+                            exposedToAir = true;
+                            break;
+                        }
+                    }
+
+
+                    if (!exposedToAir)
+                        continue;
+
+                    blockList.add(nearbyBlock);
+                }
+            }
+        }
+        return blockList;
     }
 
 }

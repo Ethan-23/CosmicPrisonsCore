@@ -18,5 +18,6 @@ public class ItemKeys {
     public static final NamespacedKey whiteScrolled = new NamespacedKey(CosmicPrisonsCore.getCore(), "whitescroll");
     public static final NamespacedKey enchantMap = new NamespacedKey(CosmicPrisonsCore.getCore(), "enchantMap");
     public static final NamespacedKey uniqueKey = new NamespacedKey(CosmicPrisonsCore.getCore(), "uniqueKey");
-
+    public static final NamespacedKey oreAmountKey = new NamespacedKey(CosmicPrisonsCore.getCore(), "oreAmount");
+    public static final NamespacedKey oreCapKey = new NamespacedKey(CosmicPrisonsCore.getCore(), "oreCap");
 }

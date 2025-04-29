@@ -1,11 +1,9 @@
 package org.evasive.me.cosmicPrisonsCore.customItems.shards;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.evasive.me.cosmicPrisonsCore.customItems.ItemMaker;
-import org.evasive.me.cosmicPrisonsCore.customItems.rarity.Rarity;
-import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
+import org.evasive.me.cosmicPrisonsCore.rarity.Rarity;
 
 public class SimpleShard implements ShardBuilder{
 

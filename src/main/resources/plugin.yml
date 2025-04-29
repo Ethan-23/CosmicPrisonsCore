@@ -9,10 +9,5 @@ commands:
     description: AdminGiveCommand
   extract:
     description: extract energy
-softdepend:
-  - ProtocolLib
-  - ProtocolSupport
-  - ViaVersion
-  - ViaBackwards
-  - ViaRewind
-  - Geyser-Spigot
+  cosmicenchant:
+    description: akdja

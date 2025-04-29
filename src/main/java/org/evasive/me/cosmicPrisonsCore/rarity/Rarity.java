@@ -1,12 +1,12 @@
-package org.evasive.me.cosmicPrisonsCore.customItems.rarity;
+package org.evasive.me.cosmicPrisonsCore.rarity;
 
 public enum Rarity {
-    SIMPLE(new Simple());
-//    UNCOMMON,
-//    ELITE,
-//    ULTIMATE,
-//    LEGENDARY,
-//    GODLY
+    SIMPLE(new Simple()),
+    UNCOMMON(new Uncommon()),
+    ELITE(new Elite()),
+    ULTIMATE(new Ultimate()),
+    LEGENDARY(new Legendary()),
+    GODLY(new Godly());
 
     private final RarityBuilder rarityBuilder;
 

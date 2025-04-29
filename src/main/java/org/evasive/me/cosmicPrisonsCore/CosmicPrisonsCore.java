@@ -11,6 +11,8 @@ import org.evasive.me.cosmicPrisonsCore.customItems.ItemMaker;
 import org.evasive.me.cosmicPrisonsCore.customItems.commands.ItemCommands;
 import org.evasive.me.cosmicPrisonsCore.customItems.energy.EnergyCombine;
 import org.evasive.me.cosmicPrisonsCore.customItems.energy.ExtractCommand;
+import org.evasive.me.cosmicPrisonsCore.customItems.satchels.events.CancelPlace;
+import org.evasive.me.cosmicPrisonsCore.enchanting.mining.AdminCommands;
 import org.evasive.me.cosmicPrisonsCore.mining.BlockRespawner;
 import org.evasive.me.cosmicPrisonsCore.mining.data.BlockRespawnMap;
 import org.evasive.me.cosmicPrisonsCore.mining.data.AnimationIds;
@@ -76,6 +78,7 @@ public final class CosmicPrisonsCore extends JavaPlugin {
         new PlayerStatsCommands();
         new ItemCommands();
         new ExtractCommand();
+        new AdminCommands();
     }
 
     public void loadEvents(){
@@ -83,6 +86,7 @@ public final class CosmicPrisonsCore extends JavaPlugin {
         pluginManager.registerEvents(new DisableCraftingEvents(), this);
         pluginManager.registerEvents(new JoinEvent(), this);
         pluginManager.registerEvents(new EnergyCombine(), this);
+        pluginManager.registerEvents(new CancelPlace(), this);
     }
 
     public static PlayerManager getPlayerLevelManager(){

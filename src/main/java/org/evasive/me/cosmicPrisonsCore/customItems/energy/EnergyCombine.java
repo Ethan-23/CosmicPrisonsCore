@@ -7,8 +7,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.evasive.me.cosmicPrisonsCore.customItems.ItemBuilder;
 import org.evasive.me.cosmicPrisonsCore.customItems.ItemList;
 import org.evasive.me.cosmicPrisonsCore.customItems.pickaxes.PickaxeBuilder;
+import org.evasive.me.cosmicPrisonsCore.customItems.satchels.SatchelBuilder;
 import org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions;
 
 import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeys.energyKey;
@@ -60,12 +62,22 @@ public class EnergyCombine implements Listener {
             completeItem = new CosmicEnergy().buildItem(pickaxeFunctions.getEnergy(clickedMeta), player.getName());
         } else {
             //Energy -> Pickaxe
-            try{
-                PickaxeBuilder pickaxeBuilder = (PickaxeBuilder) ItemList.valueOf(pickaxeFunctions.getID(clickedMeta)).getItemBuilder();
+//            try{
+//                PickaxeBuilder pickaxeBuilder = (PickaxeBuilder) ItemList.valueOf(pickaxeFunctions.getID(clickedMeta)).getItemBuilder();
+//                completeItem = pickaxeBuilder.buildItem(clickedMeta);
+//            }catch (IllegalArgumentException e){
+//                //
+//            }
+            ItemBuilder itemBuilder = ItemList.valueOf(pickaxeFunctions.getID(clickedMeta)).getItemBuilder();
+
+            if (itemBuilder instanceof PickaxeBuilder pickaxeBuilder) {
                 completeItem = pickaxeBuilder.buildItem(clickedMeta);
-            }catch (IllegalArgumentException e){
-                //
+            } else if (itemBuilder instanceof SatchelBuilder satchelBuilder) {
+                completeItem = satchelBuilder.buildItem(clickedMeta);
+            } else {
+                // Handle unknown item types if needed
             }
+
         }
 
         if(completeItem != null){

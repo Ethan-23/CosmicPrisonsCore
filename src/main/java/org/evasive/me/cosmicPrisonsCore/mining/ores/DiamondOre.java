@@ -1,11 +1,13 @@
 package org.evasive.me.cosmicPrisonsCore.mining.ores;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 
 public class DiamondOre implements OreCreator{
     @Override
     public String getName() {
-        return "Diamond Ore";
+        return "&b&lDiamond Ore";
     }
 
     @Override
@@ -36,5 +38,10 @@ public class DiamondOre implements OreCreator{
     @Override
     public int getRespawnTime() {
         return 120;
+    }
+
+    @Override
+    public int mineableLevel() {
+        return 90;
     }
 }

@@ -1,11 +1,13 @@
 package org.evasive.me.cosmicPrisonsCore.mining.ores;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 
 public class CoalOre implements OreCreator {
     @Override
     public String getName() {
-        return "Coal Ore";
+        return "&8&lCoal Ore";
     }
 
     @Override
@@ -36,5 +38,10 @@ public class CoalOre implements OreCreator {
     @Override
     public int getRespawnTime() {
         return 15;
+    }
+
+    @Override
+    public int mineableLevel() {
+        return 0;
     }
 }

@@ -13,6 +13,9 @@ import java.util.Set;
 
 public class BlockRespawner {
 
+    //REFINED BLOCKS ONLY LAST 10 SECONDS SWAP TO ORE AFTER
+
+
     public void respawnChecker(){
         new BukkitRunnable() {
             @Override

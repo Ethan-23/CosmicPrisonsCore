@@ -13,6 +13,8 @@ import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 
 import java.time.LocalDateTime;
 
+import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions.*;
+
 public class ScoreboardSetup {
 
     public void setupMiningScoreboard(Player player) {
@@ -80,11 +82,10 @@ public class ScoreboardSetup {
 
         int percent = (int)((xpIntoLevel * 100f) / xpThisLevel);
 
-        ItemKeyFunctions pickaxeFunctions = new ItemKeyFunctions();
         ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
 
-        int currentEnergy = pickaxeFunctions.getEnergy(meta);
-        int energyCap = pickaxeFunctions.getEnergyCap(meta);
+        int currentEnergy = getEnergy(meta);
+        int energyCap = getEnergyCap(meta);
 
         double energyPercent = ((double)currentEnergy / energyCap) * 100;
 
@@ -95,8 +96,8 @@ public class ScoreboardSetup {
         addScore(board, objective, "§e§lProgress", 5);
         addScore(board, objective, "  §7"+ experienceLeft +" ("+ "§a"+percent+"%" + "§7) to " + "§f"+Math.addExact(playerData.getLevel(), 1), 4);
         addScore(board, objective, "§b§lCosmic Energy", 3);
-        addScore(board, objective, "  §c"+(int)energyPercent+"% " + "§7(level " + "§r§l"+ pickaxeFunctions.getLevel(meta) + "§7)", 2);
-        addScore(board, objective, "  §7(" + "§r"+pickaxeFunctions.getEnergy(meta)+" " +"/ "+pickaxeFunctions.getEnergyCap(meta)+")", 1);
+        addScore(board, objective, "  §c"+(int)energyPercent+"% " + "§7(level " + "§r§l"+ getLevel(meta) + "§7)", 2);
+        addScore(board, objective, "  §7(" + "§r"+String.format("%,d", getEnergy(meta))+" " +"/ "+String.format("%,d", getEnergyCap(meta))+")", 1);
 //        addScore(board, objective, ComponentUtils.makeText("Account ", NamedTextColor.AQUA, true) + player.getName(), 9);
 //        addScore(board, objective, "§r", 8);
 //        addScore(board, objective, "" + ComponentUtils.makeText("Level", NamedTextColor.GOLD, true), 7);
@@ -113,12 +114,11 @@ public class ScoreboardSetup {
     }
 
     public void repeatingScoreboardUpdate() {
-        ItemKeyFunctions pickaxeFunctions = new ItemKeyFunctions();
         Bukkit.getScheduler().runTaskTimer(CosmicPrisonsCore.core, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 // Check if the player is holding a pickaxe;
                 ItemStack item = player.getInventory().getItemInMainHand();
-                if (item.hasItemMeta() && pickaxeFunctions.hasPickaxe(item.getItemMeta())) {
+                if (item.hasItemMeta() && hasPickaxe(item.getItemMeta())) {
                     // Show the mining scoreboard if the player is holding a pickaxe
                     setupMiningScoreboard(player);
                 } else {
