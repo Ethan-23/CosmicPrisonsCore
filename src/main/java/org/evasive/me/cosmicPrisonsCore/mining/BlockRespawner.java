@@ -1,12 +1,10 @@
 package org.evasive.me.cosmicPrisonsCore.mining;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore;
 import org.evasive.me.cosmicPrisonsCore.mining.data.BlockRespawnData;
+import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
 import org.evasive.me.cosmicPrisonsCore.mining.records.BlockPos;
 
 import java.util.Set;
@@ -33,6 +31,14 @@ public class BlockRespawner {
                         BlockPos blockPos = item.getBlockPos();
                         Block block = BlockPos.getLocation(blockPos).getBlock();
                         block.setType(item.getMaterial());
+                        if(OreType.valueOf(item.getMaterial().name()).ordinal() % 2 != 0)
+                            new MiningFunctions().handleRespawn(OreType.valueOf(item.getMaterial().name()).getOreCreator(), blockPos);
+                        if(CosmicPrisonsCore.miningMap.containsBlockLocation(blockPos)){
+                            //If this block is broken need to remove the respawn being added
+                            new MiningAnimation().resetBlockAnimations(block);
+                            CosmicPrisonsCore.miningMap.removeBlockPos(blockPos);
+                        }
+
                     }
                     CosmicPrisonsCore.blockRespawnMap.removeRespawnTime(key*1000);
                 }

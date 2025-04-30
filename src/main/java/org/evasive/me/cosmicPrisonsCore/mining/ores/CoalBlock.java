@@ -14,4 +14,14 @@ public class CoalBlock extends CoalOre {
         return Material.COAL;
     }
 
+    @Override
+    public int getRespawnTime(){
+        return 10;
+    }
+
+    @Override
+    public Material getMaterial() {
+        return Material.COAL_BLOCK;
+    }
+
 }

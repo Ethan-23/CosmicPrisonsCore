@@ -5,11 +5,11 @@ import java.util.Queue;
 
 public class AnimationIds {
 
-    private int nextId = 1;
+    private int nextId = 2147483647;
     private final Queue<Integer> recycledIds = new LinkedList<>();
 
     public int getUniqueAnimationId() {
-        return recycledIds.isEmpty() ? nextId++ : recycledIds.poll();
+        return recycledIds.isEmpty() ? nextId-- : recycledIds.poll();
     }
 
     public void releaseAnimationId(int id) {

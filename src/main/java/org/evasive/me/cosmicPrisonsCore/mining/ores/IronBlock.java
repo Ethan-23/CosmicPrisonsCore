@@ -13,4 +13,9 @@ public class IronBlock extends IronOre {
     public Material getItemDrop() {
         return Material.IRON_INGOT;
     }
+
+    @Override
+    public Material getMaterial() {
+        return Material.IRON_BLOCK;
+    }
 }

@@ -13,4 +13,9 @@ public class RedstoneBlock extends RedstoneOre{
     public Material getItemDrop() {
         return Material.REDSTONE;
     }
+
+    @Override
+    public Material getMaterial() {
+        return Material.REDSTONE_BLOCK;
+    }
 }

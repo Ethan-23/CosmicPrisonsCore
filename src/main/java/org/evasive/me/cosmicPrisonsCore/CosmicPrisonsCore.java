@@ -4,7 +4,6 @@ import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Item;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.evasive.me.cosmicPrisonsCore.customItems.ItemMaker;
@@ -24,6 +23,8 @@ import org.evasive.me.cosmicPrisonsCore.player.commands.PlayerStatsCommands;
 import org.evasive.me.cosmicPrisonsCore.player.events.JoinEvent;
 import org.evasive.me.cosmicPrisonsCore.player.scoreboard.ScoreboardSetup;
 import org.evasive.me.cosmicPrisonsCore.random.DisableCraftingEvents;
+import org.evasive.me.cosmicPrisonsCore.utils.PacketBroadcaster;
+import org.evasive.me.cosmicPrisonsCore.utils.ReadOutgoingPackets;
 
 public final class CosmicPrisonsCore extends JavaPlugin {
 
@@ -34,6 +35,7 @@ public final class CosmicPrisonsCore extends JavaPlugin {
     public static CosmicPrisonsCore core;
     public static AnimationIds animationIds;
     public static ItemMaker itemMaker;
+    public static PacketBroadcaster packetBroadcaster;
 
     @Override
     public void onLoad(){
@@ -41,6 +43,7 @@ public final class CosmicPrisonsCore extends JavaPlugin {
         com.github.retrooper.packetevents.PacketEvents.getAPI().load();
 
         com.github.retrooper.packetevents.PacketEvents.getAPI().getEventManager().registerListener(new MiningAnimation());
+        com.github.retrooper.packetevents.PacketEvents.getAPI().getEventManager().registerListener(new ReadOutgoingPackets());
     }
 
     @Override
@@ -55,6 +58,7 @@ public final class CosmicPrisonsCore extends JavaPlugin {
         animationIds = new AnimationIds();
         playerLevelManager = new PlayerManager();
         itemMaker = new ItemMaker();
+        packetBroadcaster = new PacketBroadcaster();
         itemMaker.init();
         Bukkit.getConsoleSender().sendMessage(Component.text("Cosmic Prisons Loaded", TextColor.fromHexString("#0affdf")));
         new ScoreboardSetup().repeatingScoreboardUpdate();
@@ -62,6 +66,7 @@ public final class CosmicPrisonsCore extends JavaPlugin {
 
         loadEvents();
         loadCommands();
+        //packetBroadcaster.globalPacketBroadcast();
     }
 
     @Override

@@ -13,4 +13,9 @@ public class DiamondBlock extends DiamondOre{
     public Material getItemDrop() {
         return Material.DIAMOND;
     }
+
+    @Override
+    public Material getMaterial() {
+        return Material.DIAMOND_BLOCK;
+    }
 }

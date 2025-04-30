@@ -3,6 +3,8 @@ package org.evasive.me.cosmicPrisonsCore.mining.data;
 import org.bukkit.Material;
 import org.evasive.me.cosmicPrisonsCore.mining.records.BlockPos;
 
+import java.util.Objects;
+
 public class BlockRespawnData {
     private Material material;
     private Material refinedMaterial;
@@ -37,4 +39,19 @@ public class BlockRespawnData {
     public void setBlockPos(BlockPos blockPos) {
         this.blockPos = blockPos;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BlockRespawnData that)) return false;
+        return material == that.material &&
+                refinedMaterial == that.refinedMaterial &&
+                Objects.equals(blockPos, that.blockPos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(material, refinedMaterial, blockPos);
+    }
+
 }

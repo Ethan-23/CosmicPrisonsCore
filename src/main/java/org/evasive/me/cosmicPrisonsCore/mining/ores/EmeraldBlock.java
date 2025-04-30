@@ -13,4 +13,9 @@ public class EmeraldBlock extends EmeraldOre{
     public Material getItemDrop() {
         return Material.EMERALD;
     }
+
+    @Override
+    public Material getMaterial() {
+        return Material.EMERALD_BLOCK;
+    }
 }

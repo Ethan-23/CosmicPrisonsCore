@@ -13,4 +13,9 @@ public class LapisBlock extends LapisOre{
     public Material getItemDrop() {
         return Material.LAPIS_LAZULI;
     }
+
+    @Override
+    public Material getMaterial() {
+        return Material.LAPIS_BLOCK;
+    }
 }

@@ -13,4 +13,9 @@ public class GoldBlock extends GoldOre{
     public Material getItemDrop() {
         return Material.GOLD_INGOT;
     }
+
+    @Override
+    public Material getMaterial() {
+        return Material.GOLD_BLOCK;
+    }
 }

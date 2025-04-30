@@ -20,10 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore;
 import org.evasive.me.cosmicPrisonsCore.enchanting.EnchantFunctions;
-import org.evasive.me.cosmicPrisonsCore.enchanting.mining.PickaxeEnchants;
-import org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.data.MiningBlockData;
-import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
 import org.evasive.me.cosmicPrisonsCore.mining.records.BlockPos;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
@@ -57,13 +54,7 @@ public class MiningAnimation extends PacketListenerAbstract {
             return;
         }
 
-        if(event.getPacketId() != 0x3A)
-            return;
-        if(player.getTargetBlockExact(5) == null)
-            return;
-        if(player.getGameMode() != GameMode.SURVIVAL)
-            return;
-        if(!CosmicPrisonsCore.selectedBlockMap.hasPlayer(player.getUniqueId()))
+        if(event.getPacketId() != 0x3A || player.getTargetBlockExact(5) == null || player.getGameMode() != GameMode.SURVIVAL || !CosmicPrisonsCore.selectedBlockMap.hasPlayer(player.getUniqueId()))
             return;
         if(!CosmicPrisonsCore.selectedBlockMap.getBlock(player.getUniqueId()).getLocation().equals(player.getTargetBlockExact(5).getLocation()))
             return;
@@ -85,9 +76,7 @@ public class MiningAnimation extends PacketListenerAbstract {
 
         Block block = CosmicPrisonsCore.selectedBlockMap.getBlock(player.getUniqueId());
 
-        if(block == null)
-            return;
-        if(!blocks.contains(block.getType()))
+        if(block == null || !blocks.contains(block.getType()))
             return;
 
         BlockPos blockPos = BlockPos.fromBlock(block);
@@ -98,8 +87,8 @@ public class MiningAnimation extends PacketListenerAbstract {
         }
 
         //MOVE TO ADD BLOCK PROGRESS
-
-
+        if(!blocks.contains(block.getType()))
+            return;
         addBlockProgress(player, block);
         if(OreType.valueOf(block.getType().name()).getOreCreator().mineableLevel() < CosmicPrisonsCore.getPlayerLevelManager().getPlayerData(player.getUniqueId()).getLevel())
             addSurroundingBlockProgress(player, block);
@@ -120,9 +109,9 @@ public class MiningAnimation extends PacketListenerAbstract {
 
     public void resetBlockAnimations(Block block){
         Map<UUID, MiningBlockData> temp = CosmicPrisonsCore.miningMap.getPlayerBlockProgress(BlockPos.fromBlock(block));
-
         for (Map.Entry<UUID, MiningBlockData> entry : temp.entrySet()) {
-            sendAnimationPacket(Bukkit.getPlayer(entry.getKey()), block, (byte) -1);
+            if (Bukkit.getPlayer(entry.getKey()) != null)
+                sendAnimationPacket(Bukkit.getPlayer(entry.getKey()), block, (byte) -1);
         }
     }
 
@@ -146,11 +135,16 @@ public class MiningAnimation extends PacketListenerAbstract {
         if(OreType.valueOf(block.getType().name()).getOreCreator().mineableLevel() > CosmicPrisonsCore.playerLevelManager.getPlayerData(player.getUniqueId()).getLevel()){
             progress = new MiningFunctions().getBaseSpeed(player.getInventory().getItemInMainHand(), block.getType());
         }else{
-            progress = new MiningFunctions().calculateEfficiency(player, player.getInventory().getItemInMainHand(), block.getType()); // Amount being added to block change with enchants / buffs
+            progress = new MiningFunctions().calculateEfficiency(player.getInventory().getItemInMainHand(), block.getType()); // Amount being added to block change with enchants / buffs
         }
+        float oldProgress = CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId());
+
+
 
         CosmicPrisonsCore.miningMap.IncreaseBlockBreak(BlockPos.fromBlock(block), player.getUniqueId(), progress);
-        sendAnimationPacket(player, block, (byte) (CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId()) / (100 / 10)));
+        //WORKS GREAT \/ Makes blocks that had their animation go away after time take until the next 10 for their animation to come back. Maybe officially reset blocks after 30 sec
+        if(((int)CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId()) / 10) > ((int)oldProgress / 10) || oldProgress == 0)
+            sendAnimationPacket(player, block, (byte) (CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId()) / (100 / 10)));
         if(CosmicPrisonsCore.miningMap.getBlockProgress(BlockPos.fromBlock(block), player.getUniqueId()) >= 100){
             breakBlock(player, block);
         }
@@ -184,7 +178,7 @@ public class MiningAnimation extends PacketListenerAbstract {
                     if (x == centerX && y == centerY && z == centerZ)
                         continue;
                     Block nearbyBlock = world.getBlockAt(x, y, z);
-                    if(nearbyBlock.getType() != block.getType() && nearbyBlock.getType() != OreType.valueOf(block.getType().name()).getOreCreator().getRefinedMaterial())
+                    if(nearbyBlock.getType() != block.getType() && nearbyBlock.getType() != OreType.valueOf(block.getType().name()).getOreCreator().getRefinedMaterial() && nearbyBlock.getType() != OreType.valueOf(block.getType().name()).getOreCreator().getRespawnMaterial())
                         continue;
 
                     BlockFace[] faces = {
