@@ -2,6 +2,7 @@ package org.evasive.me.cosmicPrisonsCore.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class EnchantUtil {
 
@@ -47,6 +48,28 @@ public class EnchantUtil {
         }
 
         return roman.toString();
+    }
+
+    private static final Random random = new Random();
+
+    public static boolean calculateChance(float baseChance, int level) {
+        float totalChance = baseChance * level;
+
+        // Cap at 100% to avoid overflow
+        if (totalChance >= 1.0f) {
+            return true;
+        }
+
+        return random.nextFloat() < totalChance;
+    }
+
+    public static boolean calculateChance(float baseChance) {
+        // Cap at 100% to avoid overflow
+        if (baseChance >= 1.0f) {
+            return true;
+        }
+
+        return random.nextFloat() < baseChance;
     }
 
 }

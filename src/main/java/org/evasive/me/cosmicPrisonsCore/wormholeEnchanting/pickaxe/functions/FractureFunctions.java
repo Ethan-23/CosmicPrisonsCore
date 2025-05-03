@@ -7,6 +7,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
+import org.evasive.me.cosmicPrisonsCore.utils.EnchantUtil;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.PickaxeEnchantFunctions;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.PickaxeEnchants;
 
@@ -17,18 +18,16 @@ import java.util.Random;
 public class FractureFunctions {
 
     PickaxeEnchantFunctions enchantFunctions = new PickaxeEnchantFunctions();
-    private final Random RANDOM = new Random();
 
     public boolean checkFractureChance(ItemMeta meta) {
         int level = enchantFunctions.getEnchantLevel(meta, PickaxeEnchants.FRACTURE);
         if(level == 0)
             return false;
-        int number = RANDOM.nextInt(15) + 1;
-        return level >= number;
+        return EnchantUtil.calculateChance(0.07f, level);
     }
 
     public float getFractureSpeed(ItemStack pickaxe) {
-        return (1 + enchantFunctions.getEnchantLevel(pickaxe.getItemMeta(), PickaxeEnchants.FRACTURE) * 0.2f);
+        return (1 + enchantFunctions.getEnchantLevel(pickaxe.getItemMeta(), PickaxeEnchants.FRACTURE) * 0.3f);
     }
 
     public List<Block> getFractureBlocks(Block block){

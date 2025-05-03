@@ -26,7 +26,7 @@ public class LevelFunctions {
 
     public boolean canLevelUp(int experienceLevel, PlayerData playerData){
         //Add level cap & prestige logic here later
-        return (experienceLevel < playerData.getExperience());
+        return (experienceLevel <= playerData.getExperience());
     }
 
     public void playLevelUpSound(Player player){

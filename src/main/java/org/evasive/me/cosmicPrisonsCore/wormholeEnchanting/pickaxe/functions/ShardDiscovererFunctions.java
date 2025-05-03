@@ -8,8 +8,8 @@ public class ShardDiscovererFunctions {
 
     PickaxeEnchantFunctions pickaxeEnchantFunctions = new PickaxeEnchantFunctions();
 
-    public int checkForShardDiscoverer(ItemStack pickaxe){
-        return pickaxeEnchantFunctions.getEnchantLevel(pickaxe.getItemMeta(), PickaxeEnchants.SHARD_DISCOVERER);
+    public float getShardDiscovererMulti(ItemStack pickaxe){
+        return 1 + 0.5f * pickaxeEnchantFunctions.getEnchantLevel(pickaxe.getItemMeta(), PickaxeEnchants.SHARD_DISCOVERER);
     }
 
 }

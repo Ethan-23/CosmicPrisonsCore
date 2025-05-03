@@ -1,5 +1,8 @@
 package org.evasive.me.cosmicPrisonsCore.player;
 
+import org.bukkit.Bukkit;
+import org.evasive.me.cosmicPrisonsCore.mining.levels.LevelFunctions;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

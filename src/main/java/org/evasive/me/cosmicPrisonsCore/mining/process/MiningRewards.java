@@ -1,5 +1,6 @@
 package org.evasive.me.cosmicPrisonsCore.mining.process;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -10,9 +11,12 @@ import org.evasive.me.cosmicPrisonsCore.customItems.energy.EnergyItemModificatio
 import org.evasive.me.cosmicPrisonsCore.customItems.satchels.functions.SatchelFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.levels.LevelFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
+import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 import org.evasive.me.cosmicPrisonsCore.utils.EnumNameConversions;
-import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.functions.SuperBreakerFunctions;
+import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.functions.*;
+
+import java.util.AbstractList;
 
 public class MiningRewards {
 
@@ -26,7 +30,7 @@ public class MiningRewards {
     private void getGoodies(Player player, OreCreator oreCreator) {
         //Shards and other special drops
         double chance = Math.random();
-        if(chance > 0.01f)
+        if(chance > 0.01f * new ShardDiscovererFunctions().getShardDiscovererMulti(player.getInventory().getItemInMainHand()))
             return;
         double rarity = Math.random();
         ItemStack selectedItem = (rarity < 0.75f) ? oreCreator.getShards().get(0) : oreCreator.getShards().get(1);
@@ -50,7 +54,11 @@ public class MiningRewards {
 
     private void getEnergyDrop(Player player, OreCreator oreCreator, ItemStack itemStack) {
         int energyGain = CalculateEnergyGain(player, itemStack, oreCreator.getMaterial());
-        new EnergyItemModification().addEnergy(player, itemStack.getItemMeta(), energyGain);
+        float energyCollectorMulti = new EnergyCollectorFunctions().getEnergyCollectorMulti(itemStack);
+
+        int totalEnergyGain = (int) (energyCollectorMulti * energyGain);
+
+        new EnergyItemModification().addEnergy(player, itemStack.getItemMeta(), totalEnergyGain);
     }
 
     private int CalculateEnergyGain(Player player, ItemStack itemStack, Material material) {
@@ -59,9 +67,16 @@ public class MiningRewards {
     }
 
     public void getOreDrops(Player player, OreCreator oreCreator){
+        boolean transfuse = false;
         double chance = Math.random();
         int amount = chance > 0.50 ? 2 : 3;
-        oreDropAlert(player, oreCreator.getItemDrop(), amount);
+        if(new TransfuseFunctions().handleTransfuse(player, player.getInventory().getItemInMainHand(), oreCreator)){
+            transfuse = true;
+            oreCreator = new TransfuseFunctions().transfuseOres(oreCreator);
+        }
+        if(new AlchemyFunctions().handleAlchemy(player, player.getInventory().getItemInMainHand(), oreCreator, amount))
+            return;
+        oreDropAlert(player, oreCreator.getItemDrop(), amount, transfuse);
         addItemsToInventory(player, oreCreator, amount);
     }
 
@@ -82,9 +97,9 @@ public class MiningRewards {
         return false;
     }
 
-    public void oreDropAlert(Player player, Material material, int blockAmount){
+    public void oreDropAlert(Player player, Material material, int blockAmount, boolean transfuse){
         String oreName = new EnumNameConversions().getOreName(material);
-        player.sendActionBar(ComponentUtils.legacy(String.format("&f%s &a+%d", oreName, blockAmount)));
+        player.sendActionBar(ComponentUtils.legacy(String.format("%s%s &a+%d", transfuse ? "&5" : "&f", oreName, blockAmount)));
     }
 
 

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore;
+import org.evasive.me.cosmicPrisonsCore.utils.EnchantUtil;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.PickaxeEnchantFunctions;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.PickaxeEnchants;
 
@@ -23,17 +24,14 @@ public class SuperBreakerFunctions {
         int level = enchantFunctions.getEnchantLevel(meta, PickaxeEnchants.SUPER_BREAKER);
         if(level == 0)
             return;
-        Random random = new Random();
-        float chance = random.nextFloat();
-        if(chance < 0.05f)
+        if(EnchantUtil.calculateChance(0.05f))//Does not increase per level
             activateSuperBreaker(player, level);
     }
 
     public void activateSuperBreaker(Player player, int level){
-        Random random = new Random();
         boolean doubleXP = false;
         if(level == 5)
-            doubleXP = random.nextDouble() <= .25;
+            doubleXP = EnchantUtil.calculateChance(0.10f);
         int timerID = startSuperBreakerTimer(player);
         CosmicPrisonsCore.superBreakerMap.addSuperBreaker(player, 3+level, 10 + level, doubleXP, timerID);
         if(doubleXP)

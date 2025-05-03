@@ -69,7 +69,6 @@ public class MiningBlockProgress {
     }
 
 
-
     public void sendAnimationPacket(Player player, Block block, byte blockProgress){
         if(blockProgress>9) blockProgress = 9;
         WrapperPlayServerBlockBreakAnimation progressAnimation = new WrapperPlayServerBlockBreakAnimation(

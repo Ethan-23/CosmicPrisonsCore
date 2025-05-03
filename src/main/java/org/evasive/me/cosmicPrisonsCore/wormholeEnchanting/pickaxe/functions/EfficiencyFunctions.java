@@ -9,7 +9,7 @@ public class EfficiencyFunctions {
     PickaxeEnchantFunctions enchantFunctions = new PickaxeEnchantFunctions();
 
     public float getEfficiencyCalculation(ItemStack pickaxe) {
-        return (1 + (0.20f * enchantFunctions.getEnchantLevel(pickaxe.getItemMeta(), PickaxeEnchants.EFFICIENCY)));
+        return (1 + (0.25f * enchantFunctions.getEnchantLevel(pickaxe.getItemMeta(), PickaxeEnchants.EFFICIENCY)));
     }
 
 }
