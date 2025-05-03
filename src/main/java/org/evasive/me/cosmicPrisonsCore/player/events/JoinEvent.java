@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore;
-import org.evasive.me.cosmicPrisonsCore.player.scoreboard.ScoreboardSetup;
+import org.evasive.me.cosmicPrisonsCore.scoreboard.ScoreboardSetup;
 
 import java.util.UUID;
 

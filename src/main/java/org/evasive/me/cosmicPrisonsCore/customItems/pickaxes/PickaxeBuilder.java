@@ -10,8 +10,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.evasive.me.cosmicPrisonsCore.customItems.ItemBuilder;
 import org.evasive.me.cosmicPrisonsCore.customItems.energy.EnergyInterface;
-import org.evasive.me.cosmicPrisonsCore.enchanting.WormholePickaxeEnchantBuilder;
-import org.evasive.me.cosmicPrisonsCore.enchanting.mining.PickaxeEnchants;
+import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.WormholePickaxeEnchantBuilder;
+import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.PickaxeEnchants;
 import org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions;
 import org.evasive.me.cosmicPrisonsCore.rarity.Rarity;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
@@ -27,8 +27,6 @@ import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions.*;
 import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeys.*;
 
 public interface PickaxeBuilder extends ItemBuilder, EnergyInterface {
-
-    ItemKeyFunctions pickaxeFunctions = new ItemKeyFunctions();
 
     float getBaseSpeed();
     int getRequiredMiningLevel();

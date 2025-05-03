@@ -41,6 +41,7 @@ public class ItemCommands implements CommandExecutor{
         }else if(strings.length == 2 && Bukkit.getPlayer(strings[0]) != null){
             Player givenPlayer = Bukkit.getPlayer(strings[0]);
             String itemName = strings[1].toUpperCase();
+            //DONT GIVE ERROR IF NOT IN ITEMLIST
             givenPlayer.getInventory().addItem(ItemList.valueOf(itemName).getItemBuilder().getItem());
             return true;
         }

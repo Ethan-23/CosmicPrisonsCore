@@ -1,8 +1,5 @@
 package org.evasive.me.cosmicPrisonsCore.utils;
 
-import org.evasive.me.cosmicPrisonsCore.enchanting.mining.PickaxeEnchants;
-import org.evasive.me.cosmicPrisonsCore.enchanting.mining.SatchelEnchants;
-
 import java.util.HashMap;
 import java.util.Map;
 

@@ -14,14 +14,12 @@ import org.evasive.me.cosmicPrisonsCore.utils.EnergyBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeyFunctions.getLevel;
 import static org.evasive.me.cosmicPrisonsCore.keys.ItemKeys.*;
 
 public interface SatchelBuilder extends ItemBuilder, EnergyInterface {
-
-    ItemKeyFunctions itemFunctions = new ItemKeyFunctions();
-
 
     OreType getOreType();
 
@@ -39,26 +37,26 @@ public interface SatchelBuilder extends ItemBuilder, EnergyInterface {
 
     @Override
     default Component getName(ItemMeta meta) {
-        String nameS = getOreType().getOreCreator().getName() + " Satchel&r&7 (&a" + String.format("%,d", itemFunctions.getOreStorage(meta)) + " &7/ &f" + String.format("%,d", Math.multiplyExact(getLevel(meta), itemFunctions.getOreCap(meta))) +"&7)";
+        String nameS = getOreType().getOreCreator().getName() + " Satchel&r&7 (&a" + String.format("%,d", ItemKeyFunctions.getOreStorage(meta)) + " &7/ &f" + String.format("%,d", Math.multiplyExact(getLevel(meta), ItemKeyFunctions.getOreCap(meta))) +"&7)";
         if(getLevel(meta) > 1)
-            nameS += " &a&l" + itemFunctions.getLevel(meta);
+            nameS += " &a&l" + getLevel(meta);
         return ComponentUtils.legacy(nameS);
     }
 
     default List<Component> getLore(ItemMeta itemMeta){
-        int currentEnergy = itemFunctions.getEnergy(itemMeta);
+        int currentEnergy = ItemKeyFunctions.getEnergy(itemMeta);
         List<Component> lore = new ArrayList<>();
 
-        lore.add(ComponentUtils.legacy("&a&l" + String.format("%,d", itemFunctions.getOreStorage(itemMeta)) + " &r&7/ &f&l" + String.format("%,d", itemFunctions.getOreCap(itemMeta))));
+        lore.add(ComponentUtils.legacy("&a&l" + String.format("%,d", ItemKeyFunctions.getOreStorage(itemMeta)) + " &r&7/ &f&l" + String.format("%,d", ItemKeyFunctions.getOreCap(itemMeta))));
 
         //ENCHANTS FIRST
-        if(itemFunctions.hasKey(itemMeta, enchantMap)){
+        if(ItemKeyFunctions.hasKey(itemMeta, enchantMap)){
             lore.add(Component.text(""));
-            lore.add(Component.text("Enchants YAY"));
+            //ADD ENCHANT LORE HERE
         }
 
         //WHITESCROLL
-        if(itemFunctions.hasKey(itemMeta, whiteScrolled) && itemFunctions.isWhitescrolled(itemMeta)){
+        if(ItemKeyFunctions.hasKey(itemMeta, whiteScrolled) && ItemKeyFunctions.isWhitescrolled(itemMeta)){
             lore.add(Component.text(""));
             //lore.add(ComponentUtils.makeText("WHITECSCROLLED", NamedTextColor.WHITE, true));
         }
@@ -66,7 +64,7 @@ public interface SatchelBuilder extends ItemBuilder, EnergyInterface {
         //ENERGY
         lore.add(Component.text(""));
         lore.add(ComponentUtils.legacy("&b&lCosmic Energy"));
-        int energyCap = itemFunctions.getEnergyCap(itemMeta);
+        int energyCap = ItemKeyFunctions.getEnergyCap(itemMeta);
         lore.add(new EnergyBar().getEnergyBar(currentEnergy, energyCap));
         lore.add(ComponentUtils.legacy("&7(&f" + String.format("%,d", currentEnergy) + " &7/ " + String.format("%,d", energyCap) + ")"));
 
@@ -90,6 +88,8 @@ public interface SatchelBuilder extends ItemBuilder, EnergyInterface {
             data.set(energyCapKey, PersistentDataType.INTEGER, getBaseEnergyCap() * level);
             data.set(oreCapKey, PersistentDataType.INTEGER, 2304);
             data.set(oreAmountKey, PersistentDataType.INTEGER, 0);
+            // NEED TO MAKE THE GIVE FUNCTION ADD THE RANDOM SINCE THIS IS BEING BUILT ON LOAD THEY ALL HAVE THE SAME KEY
+            data.set(uniqueKey, PersistentDataType.STRING, UUID.randomUUID().toString());
         }
         meta.displayName(getName(meta));
         meta.lore(getLore(meta));

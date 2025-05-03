@@ -32,7 +32,6 @@ public class CoalOre implements OreCreator {
         return List.of(ItemList.SIMPLE_SHARD.getItemBuilder().getItem(), ItemList.SIMPLE_SHARD.getItemBuilder().getItem());
     }
 
-
     @Override
     public float getHardness() {
         return 0.6f;
