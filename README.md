@@ -21,7 +21,7 @@ Project Overview
 Showcase
 -
 **Mining**
-![Cosmic Prisons Mining](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmluNzRjdHdvbWllMndjZGhiMHB3NHZzaGx5OHpxb3IwaGhocmUzYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u6Ipju2dSQXWEoHQlb/giphy.gif)
+![Cosmic Prisons Mining](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjZ0Z3gybmtiNW4zdDRiNWdvZ2hiYjcxZ3Z6OTAyaHpibHFwNXZ2cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jw8ySMdngRSfS9kcaR/giphy.gif)
 
 **Items**
 
