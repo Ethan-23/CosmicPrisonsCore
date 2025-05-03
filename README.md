@@ -1,5 +1,6 @@
 
 
+
 # Cosmic Prisons Core (Remake)
 *I have been working on this Cosmic Prisons remake from videos, the wiki, and memory. Most of the numbers behind cosmic are hidden, as always, so I had to take some guesses based on what I could see. This project is based around cosmic prisons during Soverign Map 5 (Early 2019)*
 
@@ -8,19 +9,19 @@
 
 Project Overview
 -
- - Custom Packet-Based Mining Animation
- - Leveling System
- - Mining Ores
- - Cosmic Energy
- - Custom Pickaxe Enchants 
-(*Currently added: Efficiency, Super Breaker, Fracture, Feed*)
-(*Not added to updated mining system: Transfuse, Alchemy, Energy Collector, Shard Discoverer, Ore Magnet*)
- - Ore Satchels
+ - **Custom Packet-Based Mining Animation**
+ - **Leveling System**
+ - **Mining Ores**
+ - **Cosmic Energy**
+ - **Custom Pickaxe Enchants** 
+ -- (***Currently addded**: Efficiency, Super Breaker, Fracture, Feed*)
+ -- (***Not added to updated mining system**: Transfuse, Alchemy, Energy Collector, Shard Discoverer, Ore Magnet*)
+ - **Ore Satchels**
 
 Showcase
 -
 **Mining**
-![Cosmic Prisons Mining](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmVwZHBxYXl4MjVnOTR3d29jOTdtaWs5Y2szajdyOWh4aHlmY3NkeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9bLnWHKvZlboEACrvh/giphy.gif)
+![Cosmic Prisons Mining](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYmluNzRjdHdvbWllMndjZGhiMHB3NHZzaGx5OHpxb3IwaGhocmUzYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/u6Ipju2dSQXWEoHQlb/giphy.gif)
 
 **Items**
 
