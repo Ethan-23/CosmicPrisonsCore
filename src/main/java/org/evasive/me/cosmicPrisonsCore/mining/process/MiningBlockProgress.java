@@ -7,14 +7,16 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.evasive.me.cosmicPrisonsCore.CosmicPrisonsCore;
+import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
+import org.evasive.me.cosmicPrisonsCore.mining.ores.functions.OreFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.records.BlockPos;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.functions.FractureFunctions;
 
 public class MiningBlockProgress {
 
     public void addBlockProgress(Player player, Block block) {
-        float progress = getMiningProgress(player, block);
+        float progress = getMiningProgress(player, block, OreFunctions.getOreCreatorFromBlock(block));
         createNewAnimation(player, progress, block);
         CosmicPrisonsCore.miningMap.increaseBlockBreak(BlockPos.fromBlock(block), player.getUniqueId(), progress);
         checkForBlockBreak(player, block);
@@ -30,7 +32,9 @@ public class MiningBlockProgress {
     }
 
     public void addBlockFractureProgress(Player player, Block block){
-        float progress = getFractureProgress(player, block);
+        if(!canPlayerMineOre(player, block))
+            return;
+        float progress = getFractureProgress(player);
         createNewAnimation(player, progress, block);
         CosmicPrisonsCore.miningMap.increaseBlockFractureBreak(BlockPos.fromBlock(block), player.getUniqueId(), progress);
         checkForBlockBreak(player, block);
@@ -50,14 +54,14 @@ public class MiningBlockProgress {
             sendAnimationPacket(player, block, (byte) ((currentProgress + progress) / (100 / 10)));
     }
 
-    private float getMiningProgress(Player player, Block block) {
+    private float getMiningProgress(Player player, Block block, OreCreator oreCreator) {
         MiningSpeedCalculations miningSpeedCalculations = new MiningSpeedCalculations();
-        return canPlayerMineOre(player, block) ? miningSpeedCalculations.calculateMiningSpeed(player, player.getInventory().getItemInMainHand(), block.getType()) : miningSpeedCalculations.getBaseSpeed(player.getInventory().getItemInMainHand());
+        return canPlayerMineOre(player, block) ? miningSpeedCalculations.calculateMiningSpeed(player, player.getInventory().getItemInMainHand(), block.getType()) : miningSpeedCalculations.getBaseSpeed(player.getInventory().getItemInMainHand()) / oreCreator.getHardness();
     }
 
-    private float getFractureProgress(Player player, Block block){
+    private float getFractureProgress(Player player){
         MiningSpeedCalculations miningSpeedCalculations = new MiningSpeedCalculations();
-        return canPlayerMineOre(player, block) ? miningSpeedCalculations.calculateFractureSpeed(player.getInventory().getItemInMainHand()) : 0f;
+        return miningSpeedCalculations.calculateFractureSpeed(player.getInventory().getItemInMainHand());
     }
 
     public boolean canPlayerMineOre(Player player, Block block){

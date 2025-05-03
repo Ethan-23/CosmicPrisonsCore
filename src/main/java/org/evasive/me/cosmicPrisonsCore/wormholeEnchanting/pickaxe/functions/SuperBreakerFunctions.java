@@ -25,7 +25,6 @@ public class SuperBreakerFunctions {
             return;
         Random random = new Random();
         float chance = random.nextFloat();
-        player.sendMessage("Chance: " + chance);
         if(chance < 0.05f)
             activateSuperBreaker(player, level);
     }
