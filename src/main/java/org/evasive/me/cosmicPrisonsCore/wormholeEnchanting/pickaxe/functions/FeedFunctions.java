@@ -10,8 +10,6 @@ import org.evasive.me.cosmicPrisonsCore.utils.EnchantUtil;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.PickaxeEnchantFunctions;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.PickaxeEnchants;
 
-import java.util.Random;
-
 public class FeedFunctions {
 
     PickaxeEnchantFunctions enchantFunctions = new PickaxeEnchantFunctions();

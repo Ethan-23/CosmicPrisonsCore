@@ -1,6 +1,5 @@
 package org.evasive.me.cosmicPrisonsCore.mining.process;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -11,12 +10,9 @@ import org.evasive.me.cosmicPrisonsCore.customItems.energy.EnergyItemModificatio
 import org.evasive.me.cosmicPrisonsCore.customItems.satchels.functions.SatchelFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.levels.LevelFunctions;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
-import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 import org.evasive.me.cosmicPrisonsCore.utils.EnumNameConversions;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.functions.*;
-
-import java.util.AbstractList;
 
 public class MiningRewards {
 

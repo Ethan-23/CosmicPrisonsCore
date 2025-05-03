@@ -1,6 +1,5 @@
 package org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.functions;
 
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,8 +8,6 @@ import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.PickaxeEnchantFunctio
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.PickaxeEnchants;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreType;
-
-import java.util.Random;
 
 public class TransfuseFunctions {
 

@@ -1,19 +1,15 @@
 package org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.functions;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.evasive.me.cosmicPrisonsCore.utils.ComponentUtils;
 import org.evasive.me.cosmicPrisonsCore.utils.EnchantUtil;
 import org.evasive.me.cosmicPrisonsCore.utils.EnumNameConversions;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.PickaxeEnchantFunctions;
 import org.evasive.me.cosmicPrisonsCore.wormholeEnchanting.pickaxe.PickaxeEnchants;
 import org.evasive.me.cosmicPrisonsCore.mining.ores.OreCreator;
-
-import java.util.Random;
 
 public class AlchemyFunctions {
 
