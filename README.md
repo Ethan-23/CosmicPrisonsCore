@@ -14,8 +14,6 @@ Project Overview
  - **Mining Ores**
  - **Cosmic Energy**
  - **Custom Pickaxe Enchants** 
- -- (***Currently addded**: Efficiency, Super Breaker, Fracture, Feed, Transfuse, Alchemy, Energy Collector, Shard Discoverer*)
- -- (***Not added to updated mining system**: Ore Magnet*)
  - **Ore Satchels**
 
 Showcase
