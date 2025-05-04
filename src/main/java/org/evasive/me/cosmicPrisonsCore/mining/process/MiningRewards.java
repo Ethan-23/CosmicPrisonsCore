@@ -66,6 +66,8 @@ public class MiningRewards {
         boolean transfuse = false;
         double chance = Math.random();
         int amount = chance > 0.50 ? 2 : 3;
+        if(new OreMagnetFunctions().procOreMagnet(player.getInventory().getItemInMainHand()))
+            amount += 1;
         if(new TransfuseFunctions().handleTransfuse(player, player.getInventory().getItemInMainHand(), oreCreator)){
             transfuse = true;
             oreCreator = new TransfuseFunctions().transfuseOres(oreCreator);
